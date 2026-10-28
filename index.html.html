@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borang RSVP - Majlis Pamit Beradat Budi Terpahat</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#FFF7D6',
+                            300: '#FCE277',
+                            400: '#F4CE45',
+                            500: '#D4AF37',
+                            600: '#AA820A',
+                            700: '#805F04',
+                            900: '#423000',
+                        },
+                        obsidian: {
+                            900: '#0B0C10',
+                            800: '#12131C',
+                            700: '#1A1C28',
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        vibes: ['Great Vibes', 'cursive'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Classic Malay Motif Background Patterns & Effects */
+        body {
+            background-color: #08080a;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, transparent 75%),
+                radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
+            color: #e5e7eb;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Royal Songket Overlay Pattern */
+        .songket-pattern {
+            background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#d4af37 0.75px, #08080a 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.04;
+        }
+
+        /* Gold Gradient Borders & Texts */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF7D6 0%, #FCE277 25%, #D4AF37 60%, #AA820A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border {
+            border: 1px solid transparent;
+            border-image: linear-gradient(135deg, #d4af37, #805f04, #fce277, #aa820a) 1;
+        }
+
+        .gold-card-border {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .gold-card-border:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Shimmer Effect for Royalty Buttons */
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #aa820a 50%, #805f04 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-gold::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(30deg);
+            transition: all 0.6s ease;
+        }
+        .btn-gold:hover::after {
+            left: 100%;
+        }
+
+        /* Glassmorphism Dark Card */
+        .glass-panel {
+            background: rgba(18, 19, 28, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Ornate Corner Motif */
+        .ornate-corner {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .corner-tl { top: 8px; left: 8px; border-top: 2px solid #d4af37; border-left: 2px solid #d4af37; }
+        .corner-tr { top: 8px; right: 8px; border-top: 2px solid #d4af37; border-right: 2px solid #d4af37; }
+        .corner-bl { bottom: 8px; left: 8px; border-bottom: 2px solid #d4af37; border-left: 2px solid #d4af37; }
+        .corner-br { bottom: 8px; right: 8px; border-bottom: 2px solid #d4af37; border-right: 2px solid #d4af37; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08080a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #423000;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col justify-between overflow-x-hidden">
+
+    <!-- Songket Pattern Background Overlay -->
+    <div class="fixed inset-0 songket-pattern pointer-events-none z-0"></div>
+
+    <!-- Navigation / Top Banner -->
+    <header class="relative z-10 w-full border-b border-gold-500/20 bg-black/60 backdrop-blur-md px-4 py-3">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer select-none" onclick="handleSecretLogoClick()" title="Klik 3 kali untuk paparkan butang Admin">
+                <div class="w-10 h-10 flex items-center justify-center">
+                    <!-- BAHAGIAN 1: LOGO ATAS KIRI (Header) -->
+                    <!-- Gantikan "logo-sekolah-anda.png" dengan fail/URL logo sekolah anda -->
+                    <img src="logo-sekolah.png" alt="Lencana Sekolah" class="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">
+                </div>
+                <div>
+                    <h1 class="font-cinzel text-sm sm:text-base tracking-widest text-gold-300 font-bold uppercase">SMK Padang Saujana</h1>
+                    <p class="text-[10px] sm:text-xs text-amber-200/70 tracking-wider">Jerantut, Pahang Darul Makmur</p>
+                </div>
+            </div>
+            
+            <!-- Bahagian Butang Admin (Disembunyikan secara lalai untuk pengguna luar) -->
+            <div id="adminHeaderControls" class="hidden flex items-center space-x-2">
+                <!-- Google Sheets Settings Button -->
+                <button onclick="toggleModal('settingsModal')" title="Tetapan Hubungan Google Sheets" class="px-3 py-1.5 rounded-lg border border-gold-500/40 bg-obsidian-800 text-gold-300 text-xs hover:bg-gold-500/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-excel text-emerald-400"></i>
+                    <span class="hidden sm:inline">Tetapan Sheet</span>
+                </button>
+                <!-- Admin Responses Viewer -->
+                <button onclick="openAdminPanel()" title="Lihat Senarai Rekod" class="px-3 py-1.5 rounded-lg border border-gold-500/40 bg-obsidian-800 text-gold-300 text-xs hover:bg-gold-500/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <span class="hidden sm:inline">Rekod (<span id="localCount">0</span>)</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 max-w-4xl mx-auto px-4 py-8 sm:py-12 w-full flex-grow">
+        
+        <!-- Royal Kad Jemputan Header Card -->
+        <div class="glass-panel gold-card-border rounded-2xl p-6 sm:p-10 relative mb-8 text-center overflow-hidden">
+            <!-- Decorative Inner Border -->
+            <div class="absolute inset-2 border border-gold-500/20 rounded-xl pointer-events-none"></div>
+            <div class="corner-tl"></div><div class="corner-tr"></div>
+            <div class="corner-bl"></div><div class="corner-br"></div>
+
+            <!-- BAHAGIAN 2: LOGO UTAMA (Tengah Kad) -->
+            <div class="mx-auto h-28 sm:h-36 mb-4 relative flex items-center justify-center">
+                <!-- Gantikan "logo-sekolah-anda.png" dengan fail/URL logo sekolah anda -->
+                <img src="logo-sekolah.png" alt="Lencana Sekolah" class="h-full object-contain filter drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-transform hover:scale-105 duration-300">
+            </div>
+
+            <p class="font-vibes text-2xl sm:text-4xl text-gold-300 mb-1">Dengan segala hormatnya mempersilakan</p>
+            <h2 class="font-cinzel text-xs sm:text-sm tracking-[0.2em] text-amber-200/80 uppercase font-semibold mb-6">Tan Sri / Puan Sri / Dato' / Datin / Tuan / Puan / Cik</h2>
+
+            <!-- Event Title Banner -->
+            <div class="py-4 px-2 my-4 bg-gradient-to-r from-transparent via-gold-500/15 to-transparent border-y border-gold-500/30">
+                <p class="text-xs font-cinzel tracking-widest text-gold-400 uppercase mb-1">Majlis Sanjungan Budi & Sejambak Kasih</p>
+                <h1 class="font-cinzel text-xl sm:text-3xl md:text-4xl font-extrabold gold-gradient-text tracking-wide uppercase leading-tight">
+                    MAJLIS PAMIT BERADAT BUDI TERPAHAT
+                </h1>
+                <p class="text-sm sm:text-base font-semibold text-amber-100 mt-2">
+                    TN HAJI HAMDAN BIN RAMLI
+                </p>
+                <p class="text-xs sm:text-sm text-gold-400 font-medium">PENGETUA SMK PADANG SAUJANA</p>
+            </div>
+
+            <!-- Event Details Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-left text-xs sm:text-sm">
+                <!-- Date & Time -->
+                <div class="p-3.5 rounded-xl bg-obsidian-900/60 border border-gold-500/20 flex items-start space-x-3">
+                    <div class="text-gold-400 text-lg mt-0.5"><i class="fa-solid fa-calendar-day"></i></div>
+                    <div>
+                        <div class="text-gold-300 font-bold font-cinzel">TARIKH & MASA</div>
+                        <div class="text-gray-200 font-medium">16 November 2026 (Isnin)</div>
+                        <div class="text-amber-200/70 text-xs">10.00 Pagi <span class="text-gold-400">(Ketibaan: 9.45 Pagi)</span></div>
+                    </div>
+                </div>
+
+                <!-- Venue -->
+                <div class="p-3.5 rounded-xl bg-obsidian-900/60 border border-gold-500/20 flex items-start space-x-3">
+                    <div class="text-gold-400 text-lg mt-0.5"><i class="fa-solid fa-location-dot"></i></div>
+                    <div>
+                        <div class="text-gold-300 font-bold font-cinzel">TEMPAT</div>
+                        <div class="text-gray-200 font-medium">Dewan Saujana Harmoni</div>
+                        <div class="text-amber-200/70 text-xs">SMK Padang Saujana, Jerantut</div>
+                    </div>
+                </div>
+
+                <!-- Dress Code -->
+                <div class="p-3.5 rounded-xl bg-obsidian-900/60 border border-gold-500/20 flex items-start space-x-3">
+                    <div class="text-gold-400 text-lg mt-0.5"><i class="fa-solid fa-shirt"></i></div>
+                    <div>
+                        <div class="text-gold-300 font-bold font-cinzel">ETIKA PAKAIAN</div>
+                        <div class="text-gray-200 font-medium">Bangsawan / Songket</div>
+                        <div class="text-amber-200/70 text-xs">Lelaki & Perempuan / Bersesuaian</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gold-500/20 flex flex-wrap items-center justify-between gap-2 text-xs text-amber-200/80">
+                <div><i class="fa-regular fa-clock text-gold-400 mr-1.5"></i>Sila sahkan kehadiran sebelum <strong>6 November 2026</strong></div>
+                <div class="italic text-gold-400/90 font-serif">"Budi Disanjung, Jasa Dikenang"</div>
+            </div>
+        </div>
+
+        <!-- RSVP Form Section -->
+        <div class="glass-panel gold-card-border rounded-2xl p-6 sm:p-10 relative">
+            <div class="corner-tl"></div><div class="corner-tr"></div>
+            <div class="corner-bl"></div><div class="corner-br"></div>
+
+            <div class="text-center mb-8">
+                <span class="px-3 py-1 rounded-full text-[11px] font-bold font-cinzel tracking-widest bg-gold-500/10 border border-gold-500/40 text-gold-300 uppercase">
+                    Borang Pengesahan Kehadiran (RSVP)
+                </span>
+                <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-gray-100 mt-2">Sila Lengkapkan Maklumat Anda</h3>
+                <p class="text-xs sm:text-sm text-gray-400 mt-1">Sila isi borang di bawah bagi memudahkan urusan jawatankuasa pengelola majlis.</p>
+            </div>
+
+            <!-- Form -->
+            <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-6">
+                
+                <!-- Nama Penuh -->
+                <div>
+                    <label for="fullName" class="block text-xs font-bold font-cinzel uppercase text-gold-300 mb-2">
+                        1. Nama Penuh <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gold-500/60">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <input type="text" id="fullName" name="fullName" required 
+                            placeholder="Contoh: En. Ahmad Razali Bin Hashim / Pn. Siti Aminah"
+                            class="w-full pl-10 pr-4 py-3 bg-obsidian-900/90 border border-gold-500/30 rounded-xl text-gray-100 text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition placeholder-gray-600">
+                    </div>
+                </div>
+
+                <!-- Sekolah / Jabatan / Organisasi -->
+                <div>
+                    <label for="organization" class="block text-xs font-bold font-cinzel uppercase text-gold-300 mb-2">
+                        2. Sekolah / Jabatan / Organisasi <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gold-500/60">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <input type="text" id="organization" name="organization" required 
+                            placeholder="Contoh: SK Jerantut / PPD Jerantut / PIBG SMK Padang Saujana"
+                            class="w-full pl-10 pr-4 py-3 bg-obsidian-900/90 border border-gold-500/30 rounded-xl text-gray-100 text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition placeholder-gray-600">
+                    </div>
+                </div>
+
+                <!-- Status Kehadiran (Interactive Cards) -->
+                <div>
+                    <label class="block text-xs font-bold font-cinzel uppercase text-gold-300 mb-2">
+                        3. Status Kehadiran <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Hadir -->
+                        <label class="cursor-pointer">
+                            <input type="radio" name="attendanceStatus" value="Hadir" required class="peer sr-only" onchange="updateRadioSelection()">
+                            <div class="p-4 rounded-xl border border-gold-500/30 bg-obsidian-900/60 peer-checked:border-gold-400 peer-checked:bg-gold-500/15 peer-checked:shadow-[0_0_15px_rgba(212,175,55,0.25)] transition flex flex-col items-center text-center space-y-2 hover:border-gold-500/60">
+                                <div class="w-10 h-10 rounded-full bg-emerald-900/40 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                                <span class="font-cinzel text-sm font-bold text-gray-100">Hadir</span>
+                                <span class="text-[11px] text-gray-400">Saya akan hadir ke majlis</span>
+                            </div>
+                        </label>
+
+                        <!-- Tidak Hadir -->
+                        <label class="cursor-pointer">
+                            <input type="radio" name="attendanceStatus" value="Tidak Hadir" class="peer sr-only" onchange="updateRadioSelection()">
+                            <div class="p-4 rounded-xl border border-gold-500/30 bg-obsidian-900/60 peer-checked:border-rose-500 peer-checked:bg-rose-950/30 peer-checked:shadow-[0_0_15px_rgba(244,63,94,0.2)] transition flex flex-col items-center text-center space-y-2 hover:border-gold-500/60">
+                                <div class="w-10 h-10 rounded-full bg-rose-900/40 text-rose-400 border border-rose-500/30 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </div>
+                                <span class="font-cinzel text-sm font-bold text-gray-100">Tidak Hadir</span>
+                                <span class="text-[11px] text-gray-400">Maaf, saya tidak dapat hadir</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Extra Optional Info: Phone Number -->
+                <div>
+                    <label for="phoneNumber" class="block text-xs font-bold font-cinzel uppercase text-gold-300 mb-2">
+                        No. Telefon / WhatsApp <span class="text-gray-500 font-normal">(Opsional)</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gold-500/60">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" 
+                            placeholder="Contoh: 012-3456789"
+                            class="w-full pl-10 pr-4 py-3 bg-obsidian-900/90 border border-gold-500/30 rounded-xl text-gray-100 text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition placeholder-gray-600">
+                    </div>
+                </div>
+
+                <!-- Catatan / Ucapan (Jika ada) -->
+                <div>
+                    <label for="notes" class="block text-xs font-bold font-cinzel uppercase text-gold-300 mb-2">
+                        4. Catatan / Titipan Ucapan <span class="text-gray-500 font-normal">(Jika ada)</span>
+                    </label>
+                    <div class="relative">
+                        <textarea id="notes" name="notes" rows="3" 
+                            placeholder="Sampaikan titipan ucapan, doa, atau sebarang permintaan khas pemakanan (dietary request)..."
+                            class="w-full p-4 bg-obsidian-900/90 border border-gold-500/30 rounded-xl text-gray-100 text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition placeholder-gray-600 resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Dynamic Live Status Banner -->
+                <div id="statusBanner" class="hidden p-4 rounded-xl text-xs sm:text-sm border transition"></div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" id="submitBtn" class="btn-gold w-full py-4 rounded-xl text-obsidian-900 font-cinzel font-extrabold tracking-wider text-sm sm:text-base uppercase shadow-xl flex items-center justify-center space-x-2 cursor-pointer">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span id="submitBtnText">Hantar Pengesahan RSVP</span>
+                    </button>
+                    <p class="text-[11px] text-center text-gray-400 mt-3">
+                        <i class="fa-solid fa-shield-halved text-gold-500 mr-1"></i>
+                        Data anda akan direkodkan dengan selamat & secara automatik dikemas kini.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 w-full border-t border-gold-500/20 bg-black/80 py-6 text-center text-xs text-gray-400">
+        <div class="max-w-4xl mx-auto px-4 space-y-2">
+            <p class="font-cinzel text-gold-400 tracking-widest font-semibold uppercase">Jawatankuasa Majlis Pamit Beradat Budi Terpahat</p>
+            <p class="text-gray-400">SMK Padang Saujana, 27000 Jerantut, Pahang Darul Makmur</p>
+            <p class="text-[11px] text-gray-400">© 2026 Hak Cipta Terelihara. Tema Bangsawan Melayu Klasik.</p>
+        </div>
+    </footer>
+
+
+    <!-- ================= MODALS & POPUPS ================= -->
+
+    <!-- SUCCESS MODAL & SLIP -->
+    <div id="successModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="glass-panel gold-card-border rounded-2xl max-w-lg w-full p-6 sm:p-8 relative text-center transform transition-all scale-95 opacity-0 animate-fadeIn" id="successModalCard">
+            <div class="corner-tl"></div><div class="corner-tr"></div>
+            <div class="corner-bl"></div><div class="corner-br"></div>
+
+            <div class="w-16 h-16 rounded-full bg-gold-500/20 text-gold-400 border border-gold-400 flex items-center justify-center mx-auto mb-4 text-3xl shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+
+            <h3 class="font-cinzel text-2xl font-bold text-gold-300">Maklum Balas Berjaya Direkodkan!</h3>
+            <p class="text-xs sm:text-sm text-gray-300 mt-2">Terima kasih atas maklum balas pengesahan kehadiran anda.</p>
+
+            <!-- Digital Slip Summary -->
+            <div id="receiptSlip" class="mt-6 p-4 rounded-xl bg-obsidian-900 border border-gold-500/30 text-left space-y-2 text-xs">
+                <div class="border-b border-gold-500/20 pb-2 mb-2 flex justify-between items-center">
+                    <span class="font-cinzel font-bold text-gold-400">SLIP PENGESAHAN RSVP</span>
+                    <span id="slipTimestamp" class="text-[10px] text-gray-400"></span>
+                </div>
+                <div><span class="text-gray-400">Nama Penuh:</span> <strong id="slipName" class="text-gray-100"></strong></div>
+                <div><span class="text-gray-400">Sekolah/Organisasi:</span> <span id="slipOrg" class="text-gray-200"></span></div>
+                <div><span class="text-gray-400">Status Kehadiran:</span> <span id="slipStatus" class="font-bold"></span></div>
+                <div id="slipNotesRow" class="hidden"><span class="text-gray-400">Catatan:</span> <span id="slipNotes" class="italic text-gray-300"></span></div>
+                <div class="pt-2 border-t border-dashed border-gold-500/20 text-[10px] text-emerald-400 flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span id="sheetSyncStatus">Status Google Sheet: Berjaya Disimpan</span>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-2">
+                <button onclick="copySlipToClipboard()" class="flex-1 py-2.5 px-4 rounded-xl border border-gold-500/50 bg-gold-500/10 hover:bg-gold-500/20 text-gold-300 font-cinzel text-xs font-bold transition flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-copy"></i> Salin Resit RSVP
+                </button>
+                <button onclick="closeSuccessModal()" class="flex-1 btn-gold py-2.5 px-4 rounded-xl text-obsidian-900 font-cinzel text-xs font-bold uppercase transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- GOOGLE SHEETS SETUP MODAL -->
+    <div id="settingsModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-panel gold-card-border rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative text-left overflow-y-auto max-h-[90vh]">
+            <button onclick="toggleModal('settingsModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gold-400">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-file-csv"></i>
+                </div>
+                <div>
+                    <h3 class="font-cinzel text-lg font-bold text-gold-300">Sambungan Google Sheet</h3>
+                    <p class="text-xs text-gray-400">Sambungkan borang ini secara langsung ke Google Sheet anda</p>
+                </div>
+            </div>
+
+            <!-- Webhook URL Input -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gold-400 font-cinzel mb-1">Pautan Web App Google Apps Script (URL Webhook):</label>
+                    <input type="url" id="googleScriptUrl" 
+                        placeholder="https://script.google.com/macros/s/.../exec"
+                        class="w-full px-3.5 py-2.5 bg-obsidian-900 border border-gold-500/40 rounded-xl text-gray-100 text-xs focus:outline-none focus:border-gold-400">
+                    <p class="text-[11px] text-gray-400 mt-1">
+                        * Jika dikosongkan, data akan disimpan secara tempatan (Local Storage) & anda masih boleh memuat turun fail CSV bila-bila masa.
+                    </p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveSettings()" class="btn-gold px-4 py-2 rounded-xl text-obsidian-900 font-cinzel font-bold text-xs uppercase">
+                        Simpan Tetapan URL
+                    </button>
+                    <button onclick="testGoogleSheetConnection()" class="px-4 py-2 rounded-xl border border-gold-500/40 text-gold-300 text-xs hover:bg-gold-500/20 font-cinzel">
+                        Uji Sambungan
+                    </button>
+                </div>
+
+                <!-- Step-by-step Guide -->
+                <div class="mt-6 border-t border-gold-500/20 pt-4">
+                    <h4 class="font-cinzel text-sm font-bold text-amber-200 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-circle-info text-gold-400"></i> Panduan Hubung Borang ke Google Sheet (2 Minit)
+                    </h4>
+                    <ol class="list-decimal list-inside text-xs text-gray-300 space-y-2 leading-relaxed">
+                        <li>Buka Google Sheet baharu dan namakan header baris pertama: <code class="bg-black/60 px-1.5 py-0.5 rounded text-gold-300 font-mono">Tarikh | Nama Penuh | Organisasi | Status | Telefon | Bil Pax | Catatan</code></li>
+                        <li>Klik menu <strong class="text-gold-300">Extensions > Apps Script</strong>.</li>
+                        <li>Padamkan semua kod asal & tampal (*paste*) kod skrip di bawah:</li>
+                    </ol>
+
+                    <!-- Apps Script Code Snippet -->
+                    <div class="relative mt-3">
+                        <pre class="bg-black/90 p-3 rounded-xl border border-gold-500/30 text-[11px] text-emerald-300 font-mono overflow-x-auto max-h-48"><code>function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    sheet.appendRow([
+      data.timestamp || new Date(),
+      data.fullName,
+      data.organization,
+      data.attendanceStatus,
+      data.phoneNumber || '-',
+      data.paxCount || '-',
+      data.notes || '-'
+    ]);
+    return ContentService.createTextOutput(JSON.stringify({"result":"success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({"result":"error", "error": err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</code></pre>
+                        <button onclick="copyScriptCode()" class="absolute top-2 right-2 px-2 py-1 rounded bg-gold-500/20 text-gold-300 hover:bg-gold-500/40 text-[10px] font-sans">
+                            <i class="fa-regular fa-copy"></i> Salin Kod
+                        </button>
+                    </div>
+
+                    <ol start="4" class="list-decimal list-inside text-xs text-gray-300 space-y-2 leading-relaxed mt-3">
+                        <li>Tekan butang <strong class="text-gold-300">Deploy > New deployment</strong>.</li>
+                        <li>Pilih type: <strong class="text-gold-300">Web app</strong>.</li>
+                        <li>Tetapkan <em>Who has access</em> kepada: <strong class="text-emerald-400 font-semibold">Anyone (Sesiapa Sahaja)</strong>.</li>
+                        <li>Salin <strong>Web App URL</strong> yang dihasilkan & tampal ke dalam kotak tetapan di atas.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ADMIN RESPONSES PANEL MODAL -->
+    <div id="adminModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-panel gold-card-border rounded-2xl max-w-4xl w-full p-6 sm:p-8 relative text-left overflow-hidden flex flex-col max-h-[90vh]">
+            <button onclick="toggleModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gold-400">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-gold-500/20 pb-4">
+                <div>
+                    <h3 class="font-cinzel text-xl font-bold text-gold-300">Rekod Kehadiran RSVP (Tempatan)</h3>
+                    <p class="text-xs text-gray-400">Senarai jawapan yang telah dihantar menerusi peranti ini</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportToCSV()" class="px-3.5 py-2 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 text-white font-cinzel text-xs font-bold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-file-excel"></i> Muat Turun CSV
+                    </button>
+                    <button onclick="clearLocalData()" class="px-3 py-2 rounded-xl bg-rose-950/80 border border-rose-500/40 hover:bg-rose-900 text-rose-300 text-xs font-cinzel">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Summary Cards -->
+            <div class="grid grid-cols-2 gap-3 mb-4 text-center">
+                <div class="p-3 bg-obsidian-900 border border-gold-500/20 rounded-xl">
+                    <span class="text-xs text-emerald-400 font-cinzel block">HADIR</span>
+                    <strong id="countHadir" class="text-lg font-bold text-gray-100">0</strong>
+                </div>
+                <div class="p-3 bg-obsidian-900 border border-gold-500/20 rounded-xl">
+                    <span class="text-xs text-rose-400 font-cinzel block">TIDAK HADIR</span>
+                    <strong id="countTidakHadir" class="text-lg font-bold text-gray-100">0</strong>
+                </div>
+            </div>
+
+            <!-- Response Table -->
+            <div class="overflow-x-auto flex-grow rounded-xl border border-gold-500/20">
+                <table class="w-full text-left text-xs text-gray-300">
+                    <thead class="bg-obsidian-900 font-cinzel text-gold-400 border-b border-gold-500/20 uppercase text-[10px]">
+                        <tr>
+                            <th class="p-3">Masa</th>
+                            <th class="p-3">Nama Penuh</th>
+                            <th class="p-3">Sekolah / Organisasi</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">Catatan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody" class="divide-y divide-gold-500/10">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Local Storage Keys
+        const STORAGE_KEY = 'smkps_rsvp_responses_v1';
+        const SCRIPT_URL_KEY = 'smkps_google_script_url';
+
+        // Initial Load Configuration
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            updateLocalCount();
+            checkAdminAccess();
+        });
+
+        // Semak akses Admin melalui URL Parameter ?admin=true
+        function checkAdminAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true' || urlParams.get('admin') === '1') {
+                const adminControls = document.getElementById('adminHeaderControls');
+                if (adminControls) adminControls.classList.remove('hidden');
+            }
+        }
+
+        // Ketukan Rahsia pada Logo Header (Klik 3x untuk tunjuk/sembunyi butang Admin)
+        let logoClickCount = 0;
+        let logoClickTimer;
+        function handleSecretLogoClick() {
+            logoClickCount++;
+            clearTimeout(logoClickTimer);
+            
+            if (logoClickCount >= 3) {
+                const adminControls = document.getElementById('adminHeaderControls');
+                if (adminControls) {
+                    adminControls.classList.toggle('hidden');
+                }
+                logoClickCount = 0;
+            } else {
+                logoClickTimer = setTimeout(() => {
+                    logoClickCount = 0;
+                }, 1000);
+            }
+        }
+
+        function loadSettings() {
+            const savedUrl = localStorage.getItem(SCRIPT_URL_KEY);
+            if (savedUrl) {
+                document.getElementById('googleScriptUrl').value = savedUrl;
+            }
+        }
+
+        function saveSettings() {
+            const url = document.getElementById('googleScriptUrl').value.trim();
+            localStorage.setItem(SCRIPT_URL_KEY, url);
+            showStatusBanner('Tetapan pautan Google Script berjaya disimpan!', 'success');
+            toggleModal('settingsModal');
+        }
+
+        function updateRadioSelection() {
+            // Radio card selection state visual helper
+        }
+
+        // Handle RSVP Form Submission
+        async function handleRSVPSubmit(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
+            const statusBanner = document.getElementById('statusBanner');
+            
+            // Gather Form Data
+            const formData = {
+                timestamp: new Date().toLocaleString('ms-MY', { timeZone: 'Asia/Kuala_Lumpur' }),
+                fullName: document.getElementById('fullName').value.trim(),
+                organization: document.getElementById('organization').value.trim(),
+                attendanceStatus: document.querySelector('input[name="attendanceStatus"]:checked')?.value,
+                phoneNumber: document.getElementById('phoneNumber').value.trim() || '-',
+                notes: document.getElementById('notes').value.trim() || '-'
+            };
+
+            if (!formData.fullName || !formData.organization || !formData.attendanceStatus) {
+                showStatusBanner('Sila lengkapkan semua maklumat wajib (*)', 'error');
+                return;
+            }
+
+            // Disable button & show spinner feedback
+            submitBtn.disabled = true;
+            submitBtnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Merekodkan Maklumat...';
+            statusBanner.classList.add('hidden');
+
+            // Save to Local Database (LocalStorage Fallback)
+            const localResponses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            localResponses.unshift(formData);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(localResponses));
+            updateLocalCount();
+
+            // Attempt Send to Google Sheet if Webhook URL is set
+            const scriptUrl = localStorage.getItem(SCRIPT_URL_KEY) || document.getElementById('googleScriptUrl').value.trim();
+            let sheetSyncSuccess = false;
+
+            if (scriptUrl) {
+                try {
+                    // Send JSON payload via fetch mode no-cors or standard text
+                    await fetch(scriptUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                    sheetSyncSuccess = true;
+                } catch (err) {
+                    console.warn('Google Sheet Sync Failed, stored locally:', err);
+                    sheetSyncSuccess = false;
+                }
+            }
+
+            // Trigger Confetti Animation for positive responses
+            if (formData.attendanceStatus === 'Hadir' && typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#D4AF37', '#FCE277', '#AA820A', '#FFFFFF']
+                });
+            }
+
+            // Reset submit button state
+            submitBtn.disabled = false;
+            submitBtnText.innerHTML = 'Hantar Pengesahan RSVP';
+
+            // Reset form fields
+            document.getElementById('rsvpForm').reset();
+
+            // Display Confirmation Slip Modal
+            showSuccessModal(formData, sheetSyncSuccess, scriptUrl ? true : false);
+        }
+
+        // Show Confirmation Slip
+        function showSuccessModal(data, sheetSyncSuccess, hasUrl) {
+            document.getElementById('slipTimestamp').innerText = data.timestamp;
+            document.getElementById('slipName').innerText = data.fullName;
+            document.getElementById('slipOrg').innerText = data.organization;
+            
+            const statusEl = document.getElementById('slipStatus');
+            statusEl.innerText = data.attendanceStatus;
+            if (data.attendanceStatus === 'Hadir') {
+                statusEl.className = 'font-bold text-emerald-400';
+            } else {
+                statusEl.className = 'font-bold text-rose-400';
+            }
+
+            if (data.notes && data.notes !== '-') {
+                document.getElementById('slipNotesRow').classList.remove('hidden');
+                document.getElementById('slipNotes').innerText = data.notes;
+            } else {
+                document.getElementById('slipNotesRow').classList.add('hidden');
+            }
+
+            const sheetStatusEl = document.getElementById('sheetSyncStatus');
+            if (hasUrl) {
+                sheetStatusEl.innerText = 'Status Google Sheet: Isyarat Dihantar';
+                sheetStatusEl.className = 'text-[10px] text-emerald-400 flex items-center gap-1';
+            } else {
+                sheetStatusEl.innerText = 'Status Google Sheet: Disimpan secara tempatan (Sila sediakan URL Webhook)';
+                sheetStatusEl.className = 'text-[10px] text-amber-400 flex items-center gap-1';
+            }
+
+            const modal = document.getElementById('successModal');
+            const card = document.getElementById('successModalCard');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.add('hidden');
+        }
+
+        function copySlipToClipboard() {
+            const name = document.getElementById('slipName').innerText;
+            const org = document.getElementById('slipOrg').innerText;
+            const status = document.getElementById('slipStatus').innerText;
+            const text = `[RSVP MAJLIS PAMIT BERADAT]\nNama: ${name}\nOrganisasi: ${org}\nStatus: ${status}\nMajlis Pamit Beradat Tn Haji Hamdan Bin Ramli (16 Nov 2026)`;
+
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            alert("Resit pengesahan RSVP telah disalin ke papan klip (clipboard)!");
+        }
+
+        function showStatusBanner(msg, type) {
+            const banner = document.getElementById('statusBanner');
+            banner.classList.remove('hidden', 'bg-emerald-950/80', 'border-emerald-500', 'text-emerald-300', 'bg-rose-950/80', 'border-rose-500', 'text-rose-300');
+            
+            if (type === 'success') {
+                banner.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-300', 'border');
+            } else {
+                banner.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-300', 'border');
+            }
+            banner.innerText = msg;
+        }
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+        }
+
+        // Admin Local Data Controls
+        function updateLocalCount() {
+            const responses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            document.getElementById('localCount').innerText = responses.length;
+        }
+
+        function openAdminPanel() {
+            const responses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+
+            let hadir = 0, tidakHadir = 0;
+
+            if (responses.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500">Tiada rekod disimpan setakat ini.</td></tr>';
+            } else {
+                responses.forEach(r => {
+                    if (r.attendanceStatus === 'Hadir') hadir++;
+                    else tidakHadir++;
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-gold-500/5';
+                    tr.innerHTML = `
+                        <td class="p-3 whitespace-nowrap text-gray-400">${r.timestamp}</td>
+                        <td class="p-3 font-semibold text-gray-100">${r.fullName}</td>
+                        <td class="p-3 text-gray-300">${r.organization}</td>
+                        <td class="p-3 font-bold ${r.attendanceStatus === 'Hadir' ? 'text-emerald-400' : 'text-rose-400'}">${r.attendanceStatus}</td>
+                        <td class="p-3 text-gray-400 max-w-xs truncate">${r.notes || '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('countHadir').innerText = hadir;
+            document.getElementById('countTidakHadir').innerText = tidakHadir;
+
+            toggleModal('adminModal');
+        }
+
+        function exportToCSV() {
+            const responses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            if (responses.length === 0) {
+                alert('Tiada data untuk dimuat turun.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Masa,Nama Penuh,Sekolah Organisasi,Status Kehadiran,No Telefon,Catatan\n";
+            responses.forEach(r => {
+                const row = [
+                    `"${r.timestamp}"`,
+                    `"${r.fullName.replace(/"/g, '""')}"`,
+                    `"${r.organization.replace(/"/g, '""')}"`,
+                    `"${r.attendanceStatus}"`,
+                    `"${r.phoneNumber}"`,
+                    `"${(r.notes || '').replace(/"/g, '""')}"`
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `RSVP_Majlis_Pamit_Beradat_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearLocalData() {
+            if (confirm("Adakah anda pasti mahu memadam semua rekod RSVP tempatan ini?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                updateLocalCount();
+                openAdminPanel();
+            }
+        }
+
+        function copyScriptCode() {
+            const code = `function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    sheet.appendRow([
+      data.timestamp || new Date(),
+      data.fullName,
+      data.organization,
+      data.attendanceStatus,
+      data.phoneNumber || '-',
+      data.paxCount || '-',
+      data.notes || '-'
+    ]);
+    return ContentService.createTextOutput(JSON.stringify({"result":"success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({"result":"error", "error": err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = code;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            alert("Kod Apps Script berjaya disalin!");
+        }
+
+        function testGoogleSheetConnection() {
+            const url = document.getElementById('googleScriptUrl').value.trim();
+            if (!url) {
+                alert("Sila masukkan Web App URL Google Apps Script terlebih dahulu.");
+                return;
+            }
+            alert("Ujian penghantaran: Pastikan URL Apps Script di-deploy sebagai 'Anyone' (Sesiapa Sahaja). Cuba hantar satu jawapan RSVP untuk menguji kemasukan data ke Google Sheet.");
+        }
+    </script>
+</body>
+</html>
